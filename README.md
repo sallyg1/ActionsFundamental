@@ -1,6 +1,7 @@
 # GitHub Actions Fundamentals
  Lab 1 push-trigger test
  Skip CI
+ Test PR
 Repo for the `GitHub Actions Fundamentals` training.
 
 ## 👉 Objectives
