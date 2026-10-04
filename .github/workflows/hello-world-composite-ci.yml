@@ -1,0 +1,39 @@
+name: CI Build for Composite Action
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "hello-world-composite-action/**"
+  workflow_dispatch:
+    inputs:
+      who:
+        description: "Who should the action greet?"
+        required: true
+        default: "@octocat"
+
+permissions:
+  contents: read
+
+jobs:
+  test-composite-action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+
+      - name: Run my composite action
+        id: hello
+        uses: ./hello-world-composite-action
+        with:
+          who: ${{ inputs.who || '@octocat' }}
+
+      - name: Display composite outputs
+        shell: bash
+        env:
+          GREETING: ${{ steps.hello.outputs.greeting }}
+          RUNNER_OS_USED: ${{ steps.hello.outputs.runner_os }}
+        run: |
+          echo "Greeting: $GREETING"
+          echo "Runner OS: $RUNNER_OS_USED"
