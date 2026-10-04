@@ -1,0 +1,35 @@
+name: CI Build for JavaScript Action
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "hello-world-javascript-action/**"
+  workflow_dispatch:
+    inputs:
+      who:
+        description: "Who should the action greet?"
+        required: true
+        default: "@octocat"
+
+permissions:
+  contents: read
+
+jobs:
+  test-javascript-action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+
+      - name: Run my JavaScript action
+        id: hello
+        uses: ./hello-world-javascript-action
+        with:
+          who: ${{ inputs.who || '@octocat' }}
+
+      - name: Display action outputs
+        run: |
+          echo "Greeting: ${{ steps.hello.outputs.greeting }}"
+          echo "Time: ${{ steps.hello.outputs.time }}"
